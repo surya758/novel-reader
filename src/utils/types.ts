@@ -3,10 +3,14 @@ type NovelCardType = {
 	image: string;
 };
 
+type Chapter = {
+	title: string;
+};
+
 type HomeStackParamList = {
 	Home: undefined;
 	Chapter: undefined;
-	Detail: undefined;
+	Detail: { title: string };
 };
 
-export { NovelCardType, HomeStackParamList };
+export { NovelCardType, HomeStackParamList, Chapter };

@@ -1,8 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Layout from "@src/components/Layout";
-import { COLORS } from "@src/theme";
-import { useNavigation } from "@react-navigation/native";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
 

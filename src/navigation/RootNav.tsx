@@ -1,11 +1,14 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator, StackNavigationProp } from "@react-navigation/stack";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import HomeScreen from "@src/screens/Home";
 import ChapterScreen from "src/screens/Chapter";
 import NovelDetailScreen from "src/screens/Details";
 import { HomeStackParamList } from "@src/utils/types";
 
 const Stack = createStackNavigator<HomeStackParamList>();
+
+export type HomeStackNavigationProp = StackNavigationProp<HomeStackParamList>;
+export type HomeStackRouteProp = RouteProp<HomeStackParamList>;
 
 const RootNav = () => {
 	return (
