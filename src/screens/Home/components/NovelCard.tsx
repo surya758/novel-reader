@@ -1,27 +1,30 @@
 import { Image, StyleSheet, Text, View, Pressable } from "react-native";
 import React from "react";
 import { COLORS } from "@src/theme";
-import type { NovelCardType } from "@src/utils/types";
+import type { Novel, NovelCardType } from "@src/utils/types";
 import RNText from "@src/components/RNText";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
+import useNovelStore from "src/store";
 
 type NovelCardProps = {
-	item: NovelCardType;
+	novel: Novel;
 };
 
-const NovelCard = ({ item }: NovelCardProps) => {
-	const navigation = useNavigation<HomeStackNavigationProp>();
+const NovelCard = ({ novel }: NovelCardProps) => {
+	const navigation = useNavigation<HomeStackNavigationProp<"Home">>();
+	const { selectNovel } = useNovelStore();
 
 	const handlePress = () => {
-		navigation.navigate("Detail", { title: item.title });
+		selectNovel(novel.id);
+		navigation.navigate("Detail", { title: novel.title });
 	};
 
 	return (
 		<Pressable style={styles.container} onPress={handlePress}>
-			<Image source={{ uri: item.image }} style={styles.imageStyle} />
+			<Image source={{ uri: novel.imageUrl }} style={styles.imageStyle} />
 			<RNText style={styles.title} ellipsizeMode='tail' numberOfLines={2}>
-				{item.title}
+				{novel.title}
 			</RNText>
 		</Pressable>
 	);

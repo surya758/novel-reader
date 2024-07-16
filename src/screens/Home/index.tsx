@@ -3,33 +3,49 @@ import React from "react";
 import Layout from "@src/components/Layout";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
+import useNovelStore from "@src/store";
 
-const NOVEL_DATA = [
+const DUMMY_CHAPTERS = [
 	{
-		title: "The Beginning After The End",
-		image: "https://www.novelupdates.com/img/noimagefound.jpg",
+		id: 1,
+		title: "Chapter 1",
+		content: "",
 	},
 	{
-		title: "The Beginning After The End",
-		image: "https://www.novelupdates.com/img/noimagefound.jpg",
+		id: 2,
+		title: "Chapter 2",
+		content: "",
 	},
 	{
-		title: "The Beginning After The End",
-		image: "https://www.novelupdates.com/img/noimagefound.jpg",
+		id: 3,
+		title: "Chapter 3",
+		content: "",
 	},
 	{
-		title: "The Beginning After The End",
-		image: "https://www.novelupdates.com/img/noimagefound.jpg",
+		id: 4,
+		title: "Chapter 4",
+		content: "",
+	},
+	{
+		id: 5,
+		title: "Chapter 5",
+		content: "",
 	},
 ];
 
 const HomeScreen = () => {
+	const { novels, setChapters } = useNovelStore();
+
+	React.useEffect(() => {
+		setChapters(DUMMY_CHAPTERS);
+	}, []);
+
 	return (
-		<Layout style={styles.layout}>
+		<Layout>
 			<FlashList
 				contentContainerStyle={styles.flashlistContent}
-				data={NOVEL_DATA}
-				renderItem={({ item }) => <NovelCard item={item} />}
+				data={novels}
+				renderItem={({ item }) => <NovelCard novel={item} />}
 				keyExtractor={(item, index) => String(index)}
 				estimatedItemSize={10}
 				numColumns={3}
@@ -41,7 +57,6 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-	layout: {},
 	flashlistContent: {
 		padding: 10,
 	},

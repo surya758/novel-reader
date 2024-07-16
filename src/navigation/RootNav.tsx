@@ -7,8 +7,14 @@ import { HomeStackParamList } from "@src/utils/types";
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
-export type HomeStackNavigationProp = StackNavigationProp<HomeStackParamList>;
-export type HomeStackRouteProp = RouteProp<HomeStackParamList>;
+export type HomeStackNavigationProp<T extends keyof HomeStackParamList> = StackNavigationProp<
+	HomeStackParamList,
+	T
+>;
+export type HomeStackRouteProp<T extends keyof HomeStackParamList> = RouteProp<
+	HomeStackParamList,
+	T
+>;
 
 const RootNav = () => {
 	return (

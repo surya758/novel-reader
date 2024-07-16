@@ -4,18 +4,21 @@ import { Pressable, StyleSheet, View } from "react-native";
 import { RNText } from "@src/components";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
+import useNovelStore from "src/store";
 
-const ChapterCard = ({ chapter, index }: { chapter: Chapter; index: number }) => {
-	const navigation = useNavigation<HomeStackNavigationProp>();
+const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
+	const { fetchChapterContent, selectedNovelId, selectChapter } = useNovelStore();
+	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
 	const handleOnPress = () => {
-		console.log(`Chapter ${index + 1} pressed`);
-		navigation.navigate("Chapter");
+		selectChapter(chapter.id);
+		fetchChapterContent(selectedNovelId!, chapter.id);
+		navigation.navigate("Chapter", { title: chapter.title });
 	};
 
 	return (
 		<Pressable style={styles.chapterCardContainer} onPress={handleOnPress}>
 			<RNText style={styles.chapterCardText} numberOfLines={2} ellipsizeMode='tail'>
-				Chapter {index + 1}: {chapter.title}
+				Chapter {chapter.id}: {chapter.title}
 			</RNText>
 		</Pressable>
 	);
@@ -28,12 +31,12 @@ const styles = StyleSheet.create({
 		minHeight: 30,
 		justifyContent: "center",
 		borderBottomWidth: 1,
-		borderBottomColor: COLORS.grey,
+		borderBottomColor: COLORS.lightGrey,
 		margin: 10,
 		paddingBottom: 2,
 	},
 	chapterCardText: {
 		fontSize: 16,
-		color: COLORS.white,
+		color: COLORS.lightGrey,
 	},
 });

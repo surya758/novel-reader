@@ -1,13 +1,32 @@
-import { SafeAreaView, StyleSheet, Text, View, StyleProp, ViewStyle } from "react-native";
+import {
+	SafeAreaView,
+	StyleSheet,
+	Text,
+	View,
+	StyleProp,
+	ViewStyle,
+	ScrollView,
+} from "react-native";
 import React, { PropsWithChildren } from "react";
 import { COLORS } from "src/theme";
+import If from "./If";
 
 type LayoutProps = PropsWithChildren<{
 	style?: StyleProp<ViewStyle>;
+	type?: "view" | "scroll";
 }>;
 
-const Layout = ({ children, style }: LayoutProps) => {
-	return <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>;
+const Layout = ({ children, style, type = "view" }: LayoutProps) => {
+	return (
+		<SafeAreaView style={[styles.container, style]}>
+			<If
+				condition={type === "view"}
+				otherwise={<ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>}
+			>
+				<>{children}</>
+			</If>
+		</SafeAreaView>
+	);
 };
 
 export default Layout;
