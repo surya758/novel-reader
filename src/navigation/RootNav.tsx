@@ -3,8 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import HomeScreen from "@src/screens/Home";
 import ChapterScreen from "src/screens/Chapter";
 import NovelDetailScreen from "src/screens/Details";
+import { HomeStackParamList } from "@src/utils/types";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<HomeStackParamList>();
 
 const RootNav = () => {
 	return (
