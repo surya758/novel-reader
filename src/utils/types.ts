@@ -6,6 +6,8 @@ type NovelCardType = {
 interface Novel {
 	_id: string;
 	title: string;
+	genre: string;
+	description: string;
 	imageUrl: string;
 	chaptersCount: number;
 }
