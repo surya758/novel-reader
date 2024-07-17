@@ -9,7 +9,7 @@ import { HomeStackRouteProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 
 const NovelDetailScreen = () => {
-	const { chapters, selectedNovelId, fetchAllChaptersTitles } = useNovelStore();
+	const { chapters, selectedNovelId, fetchAllChaptersTitles, isLoading } = useNovelStore();
 	const params = useRoute<HomeStackRouteProp<"Detail">>().params!;
 
 	useEffect(() => {
@@ -31,7 +31,7 @@ const NovelDetailScreen = () => {
 	return (
 		<Layout>
 			<FlashList
-				data={sortedChapters}
+				data={!isLoading ? sortedChapters : []}
 				ListHeaderComponent={headerComponent}
 				renderItem={({ item }) => <ChapterCard chapter={item} />}
 				keyExtractor={(item) => item._id}

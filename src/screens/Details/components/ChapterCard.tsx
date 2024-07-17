@@ -5,6 +5,7 @@ import { RNText } from "@src/components";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
+import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 
 const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
 	const { fetchChapterContent, selectChapter } = useNovelStore();
@@ -19,7 +20,7 @@ const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
 	return (
 		<Pressable style={styles.chapterCardContainer} onPress={handleOnPress}>
 			<RNText style={styles.chapterCardText} numberOfLines={2} ellipsizeMode='tail'>
-				Chapter {chapter.chapterNumber}: {chapter.title}
+				Chapter {chapter.chapterNumber}: {capitaliseFirstLetterOfEveryWord(chapter.title)}
 			</RNText>
 		</Pressable>
 	);

@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View, Pressable } from "react-native";
+import { Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { COLORS } from "@src/theme";
 import type { Novel, NovelCardType } from "@src/utils/types";
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
 	title: {
 		marginTop: 10,
 		color: COLORS.white,
-		fontSize: 16,
+		fontSize: 12,
 		fontWeight: "bold",
 		textAlign: "center",
 	},
