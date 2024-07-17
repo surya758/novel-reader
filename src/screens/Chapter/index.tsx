@@ -1,11 +1,11 @@
-import { ActivityIndicator, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
-import { If, Layout, RNText } from "@src/components";
+import { If, Layout, Loader, RNText } from "@src/components";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeStackRouteProp, HomeStackNavigationProp } from "@src/navigation/RootNav";
-import { COLORS } from "src/theme";
+import { COLORS } from "@src/theme";
 import ChapterMovement from "./components/ChapterMovement";
-import useNovelStore from "src/store";
+import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
 
 const ChapterScreen = () => {
@@ -64,7 +64,7 @@ const ChapterScreen = () => {
 	const ChapterLoading = () => {
 		return (
 			<View style={styles.chapterLoadingContainer}>
-				<ActivityIndicator />
+				<Loader />
 			</View>
 		);
 	};

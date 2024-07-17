@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import Layout from "@src/components/Layout";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
 import useNovelStore from "@src/store";
+import { COLORS } from "src/theme";
+import { Loader } from "src/components";
 
 const HomeScreen = () => {
 	const { novels, fetchAllNovels } = useNovelStore();
@@ -18,6 +20,7 @@ const HomeScreen = () => {
 				contentContainerStyle={styles.flashlistContent}
 				data={novels}
 				renderItem={({ item }) => <NovelCard novel={item} />}
+				ListEmptyComponent={<Loader />}
 				keyExtractor={(item) => item._id}
 				estimatedItemSize={10}
 				numColumns={3}

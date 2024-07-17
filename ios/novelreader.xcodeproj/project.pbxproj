@@ -7,37 +7,37 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00105D1FDD614DBD89A9EFBF /* Segoe-UI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4C1C5256F9146A9BB5E0F02 /* Segoe-UI.ttf */; };
+		0E2A3D64D6984E5C98EFBBCE /* Segoe-UI-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA57C900DF804CCD957F8DAB /* Segoe-UI-Bold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1BE1786DCF6E4ABD8245152E /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4F099C0204907A3B1A6ED /* noop-file.swift */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		4C01FFACDA834898AF59C18D /* Segoe-UI-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 096206A15AC44201A736833F /* Segoe-UI-Bold.ttf */; };
-		6BE07D695EC84D118D589B85 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6995F68853BE4E47919C5F09 /* noop-file.swift */; };
+		45C100226F3F4D9BBAE7B440 /* Segoe-UI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6285DD01949F403EB20C1910 /* Segoe-UI.ttf */; };
+		6BC69A8127BA33B7C9BA95B7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DE2F986FDFE098CB81E40373 /* PrivacyInfo.xcprivacy */; };
 		96905EF65AED1B983A6B3ABC /* libPods-novelreader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-novelreader.a */; };
-		AAA51E58889AC33B0F2100EA /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A1051B7714307DCF8CCC2346 /* PrivacyInfo.xcprivacy */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		096206A15AC44201A736833F /* Segoe-UI-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe-UI-Bold.ttf"; path = "../assets/fonts/Segoe-UI-Bold.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* novelreader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = novelreader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Novelly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Novelly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = novelreader/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = novelreader/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = novelreader/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = novelreader/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = novelreader/main.m; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-novelreader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-novelreader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6995F68853BE4E47919C5F09 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "novelreader/noop-file.swift"; sourceTree = "<group>"; };
+		6285DD01949F403EB20C1910 /* Segoe-UI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe-UI.ttf"; path = "../assets/fonts/Segoe-UI.ttf"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-novelreader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-novelreader.debug.xcconfig"; path = "Target Support Files/Pods-novelreader/Pods-novelreader.debug.xcconfig"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-novelreader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-novelreader.release.xcconfig"; path = "Target Support Files/Pods-novelreader/Pods-novelreader.release.xcconfig"; sourceTree = "<group>"; };
-		A1051B7714307DCF8CCC2346 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = novelreader/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		A4C1C5256F9146A9BB5E0F02 /* Segoe-UI.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe-UI.ttf"; path = "../assets/fonts/Segoe-UI.ttf"; sourceTree = "<group>"; };
+		89BF03541A3642F4B92E2F7E /* novelreader-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "novelreader-Bridging-Header.h"; path = "novelreader/novelreader-Bridging-Header.h"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = novelreader/SplashScreen.storyboard; sourceTree = "<group>"; };
+		BAC4F099C0204907A3B1A6ED /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "novelreader/noop-file.swift"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		E46E5464656F4399B2B2F9F2 /* novelreader-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "novelreader-Bridging-Header.h"; path = "novelreader/novelreader-Bridging-Header.h"; sourceTree = "<group>"; };
+		DE2F986FDFE098CB81E40373 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = novelreader/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FA57C900DF804CCD957F8DAB /* Segoe-UI-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Segoe-UI-Bold.ttf"; path = "../assets/fonts/Segoe-UI-Bold.ttf"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-novelreader/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,9 +63,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				6995F68853BE4E47919C5F09 /* noop-file.swift */,
-				E46E5464656F4399B2B2F9F2 /* novelreader-Bridging-Header.h */,
-				A1051B7714307DCF8CCC2346 /* PrivacyInfo.xcprivacy */,
+				BAC4F099C0204907A3B1A6ED /* noop-file.swift */,
+				89BF03541A3642F4B92E2F7E /* novelreader-Bridging-Header.h */,
+				DE2F986FDFE098CB81E40373 /* PrivacyInfo.xcprivacy */,
 			);
 			name = novelreader;
 			sourceTree = "<group>";
@@ -79,11 +79,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		7BC729305A8E4217A1C8C862 /* Resources */ = {
+		4F30A39A938F454E9D02C6CB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				096206A15AC44201A736833F /* Segoe-UI-Bold.ttf */,
-				A4C1C5256F9146A9BB5E0F02 /* Segoe-UI.ttf */,
+				FA57C900DF804CCD957F8DAB /* Segoe-UI-Bold.ttf */,
+				6285DD01949F403EB20C1910 /* Segoe-UI.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -104,7 +104,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
-				7BC729305A8E4217A1C8C862 /* Resources */,
+				4F30A39A938F454E9D02C6CB /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -114,7 +114,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* novelreader.app */,
+				13B07F961A680F5B00A75B9A /* Novelly.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,13 +161,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "novelreader" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				AEDCF349C9D526B81A632527 /* [Expo] Configure project */,
+				F3E9F3DE92E10FE2661BA97A /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				BE19DA536DD31750EB618D9D /* [CP] Embed Pods Frameworks */,
+				9AF0FE74B28C8896C7084102 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -175,7 +175,7 @@
 			);
 			name = novelreader;
 			productName = novelreader;
-			productReference = 13B07F961A680F5B00A75B9A /* novelreader.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Novelly.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -217,9 +217,9 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				4C01FFACDA834898AF59C18D /* Segoe-UI-Bold.ttf in Resources */,
-				00105D1FDD614DBD89A9EFBF /* Segoe-UI.ttf in Resources */,
-				AAA51E58889AC33B0F2100EA /* PrivacyInfo.xcprivacy in Resources */,
+				0E2A3D64D6984E5C98EFBBCE /* Segoe-UI-Bold.ttf in Resources */,
+				45C100226F3F4D9BBAE7B440 /* Segoe-UI.ttf in Resources */,
+				6BC69A8127BA33B7C9BA95B7 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,7 +327,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-novelreader/Pods-novelreader-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		AEDCF349C9D526B81A632527 /* [Expo] Configure project */ = {
+		9AF0FE74B28C8896C7084102 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-novelreader/Pods-novelreader-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-novelreader/Pods-novelreader-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F3E9F3DE92E10FE2661BA97A /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -346,24 +364,6 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-novelreader/expo-configure-project.sh\"\n";
 		};
-		BE19DA536DD31750EB618D9D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-novelreader/Pods-novelreader-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-novelreader/Pods-novelreader-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -374,7 +374,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				6BE07D695EC84D118D589B85 /* noop-file.swift in Sources */,
+				1BE1786DCF6E4ABD8245152E /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +396,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = novelreader/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Novelly;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -409,7 +410,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.suryakant758.novel-reader";
-				PRODUCT_NAME = novelreader;
+				PRODUCT_NAME = "Novelly";
 				SWIFT_OBJC_BRIDGING_HEADER = "novelreader/novelreader-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -428,6 +429,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6DWJVY53FT;
 				INFOPLIST_FILE = novelreader/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Novelly;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -441,7 +443,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.suryakant758.novel-reader";
-				PRODUCT_NAME = novelreader;
+				PRODUCT_NAME = "Novelly";
 				SWIFT_OBJC_BRIDGING_HEADER = "novelreader/novelreader-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

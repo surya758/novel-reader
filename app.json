@@ -1,44 +1,41 @@
 {
-  "expo": {
-    "name": "novel-reader",
-    "slug": "novel-reader",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.suryakant758.novel-reader"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "plugins": [
-      [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/Segoe-UI-Bold.ttf",
-            "./assets/fonts/Segoe-UI.ttf"
-          ]
-        }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "a2f27a78-b155-4bcf-a325-36f60e450de5"
-      }
-    }
-  }
+	"expo": {
+		"name": "Novelly",
+		"slug": "Novelly",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.suryakant758.novel-reader"
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			}
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"plugins": [
+			[
+				"expo-font",
+				{
+					"fonts": ["./assets/fonts/Segoe-UI-Bold.ttf", "./assets/fonts/Segoe-UI.ttf"]
+				}
+			]
+		],
+		"extra": {
+			"eas": {
+				"projectId": "a2f27a78-b155-4bcf-a325-36f60e450de5"
+			}
+		}
+	}
 }

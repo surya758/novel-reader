@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
-import { Layout, RNText } from "@src/components";
+import React, { useEffect, useMemo } from "react";
+import { Layout, Loader, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
 import { COLORS } from "@src/theme";
 import ChapterCard from "./components/ChapterCard";
@@ -24,14 +24,19 @@ const NovelDetailScreen = () => {
 		);
 	};
 
+	const sortedChapters = useMemo(() => {
+		return chapters.sort((a, b) => a.chapterNumber - b.chapterNumber);
+	}, [chapters]);
+
 	return (
 		<Layout>
 			<FlashList
-				data={chapters}
+				data={sortedChapters}
 				ListHeaderComponent={headerComponent}
 				renderItem={({ item }) => <ChapterCard chapter={item} />}
 				keyExtractor={(item) => item._id}
 				estimatedItemSize={30}
+				ListEmptyComponent={<Loader />}
 			/>
 		</Layout>
 	);

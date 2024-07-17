@@ -1,10 +1,8 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { devtools, createJSONStorage } from "zustand/middleware";
 import { Chapter, Content, Novel } from "@src/utils/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+const BACKEND_URL = "https://novel-app-server.vercel.app/api/v1";
 interface NovelStore {
 	novels: Novel[];
 	selectedNovelId: string | null;
@@ -77,18 +75,18 @@ const useNovelStore = create<NovelStore>()((set, get) => ({
 }));
 
 async function fetchChapterContent(chapterId: string): Promise<Content[]> {
-	const response = await axios.get(`http://localhost:3000/api/v1/chapters/${chapterId}`);
+	const response = await axios.get(`${BACKEND_URL}/chapters/${chapterId}`);
 	const parsedContent = JSON.parse(response.data.content);
 	return parsedContent;
 }
 
 async function fetchNovels(): Promise<Novel[]> {
-	const response = await axios.get("http://localhost:3000/api/v1/novels");
+	const response = await axios.get(`${BACKEND_URL}/novels`);
 	return response.data;
 }
 
 async function fetchAllChaptersTitles(novelId: string): Promise<Chapter[]> {
-	const response = await axios.get(`http://localhost:3000/api/v1/novels/${novelId}/title`);
+	const response = await axios.get(`${BACKEND_URL}/novels/${novelId}/title`);
 	return response.data;
 }
 
