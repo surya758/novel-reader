@@ -1,10 +1,9 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import Layout from "@src/components/Layout";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
 import useNovelStore from "@src/store";
-import { COLORS } from "src/theme";
 import { Loader } from "src/components";
 
 const HomeScreen = () => {

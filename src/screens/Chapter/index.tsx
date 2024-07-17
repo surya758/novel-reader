@@ -1,5 +1,5 @@
-import { Pressable, StyleSheet, View } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, View, RefreshControl } from "react-native";
+import React, { useState } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { HomeStackRouteProp, HomeStackNavigationProp } from "@src/navigation/RootNav";
@@ -7,10 +7,13 @@ import { COLORS } from "@src/theme";
 import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
+import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
 	const { title } = useRoute<HomeStackRouteProp<"Chapter">>().params;
+	const [refreshing, setRefreshing] = useState(false);
+
 	const { currentChapterId, isLoading, selectChapter, fetchChapterContent, chapters } =
 		useNovelStore();
 	const chapterContent = useNovelStore(
@@ -63,10 +66,20 @@ const ChapterScreen = () => {
 		);
 	};
 
+	const handleRefresh = () => {
+		setRefreshing(true);
+		navigateChapter("previous");
+		setRefreshing(false);
+	};
+
 	return (
-		<Layout style={styles.layout} type='scroll'>
+		<Layout
+			style={styles.layout}
+			type='scroll'
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+		>
 			<RNText style={styles.titleText}>
-				Chapter {chapterNumber}: {title}
+				Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
 			</RNText>
 			<View style={styles.contentContainer}>
 				<If condition={!isLoading} otherwise={<ChapterLoading />}>

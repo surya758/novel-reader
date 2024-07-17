@@ -7,7 +7,6 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "@src/utils/helpers";
-import FastImage from "react-native-fast-image";
 
 type NovelCardProps = {
 	novel: Novel;

@@ -14,14 +14,19 @@ import If from "./If";
 type LayoutProps = PropsWithChildren<{
 	style?: StyleProp<ViewStyle>;
 	type?: "view" | "scroll";
+	refreshControl?: React.ReactElement;
 }>;
 
-const Layout = ({ children, style, type = "view" }: LayoutProps) => {
+const Layout = ({ children, style, type = "view", refreshControl }: LayoutProps) => {
 	return (
 		<SafeAreaView style={[styles.container, style]}>
 			<If
 				condition={type === "view"}
-				otherwise={<ScrollView showsVerticalScrollIndicator={false}>{children}</ScrollView>}
+				otherwise={
+					<ScrollView showsVerticalScrollIndicator={false} refreshControl={refreshControl}>
+						{children}
+					</ScrollView>
+				}
 			>
 				<>{children}</>
 			</If>
