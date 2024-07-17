@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "@src/components/Layout";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
@@ -8,14 +8,23 @@ import { Loader } from "src/components";
 
 const HomeScreen = () => {
 	const { novels, fetchAllNovels } = useNovelStore();
+	const [refreshing, setRefreshing] = useState(false);
 
 	useEffect(() => {
 		fetchAllNovels();
 	}, []);
 
+	const handleRefresh = () => {
+		setRefreshing(true);
+		fetchAllNovels();
+		setRefreshing(false);
+	};
+
 	return (
 		<Layout>
 			<FlashList
+				onRefresh={handleRefresh}
+				refreshing={refreshing}
 				contentContainerStyle={styles.flashlistContent}
 				data={novels}
 				renderItem={({ item }) => <NovelCard novel={item} />}
