@@ -20,6 +20,7 @@ mongoose
 	.then(() => console.log("Connected to MongoDB"))
 	.catch((err) => console.log(err));
 
+app.get("/", (req, res) => res.send("Express on Vercel"));
 app.use("/api/v1/novels", novelRoutes);
 app.use("/api/v1/chapters", chapterRoutes);
 
