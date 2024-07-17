@@ -11,14 +11,8 @@ import { FlashList } from "@shopify/flash-list";
 const ChapterScreen = () => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
 	const { title } = useRoute<HomeStackRouteProp<"Chapter">>().params;
-	const {
-		currentChapterId,
-		isLoading,
-		selectChapter,
-		fetchChapterContent,
-		selectedNovelId,
-		chapters,
-	} = useNovelStore();
+	const { currentChapterId, isLoading, selectChapter, fetchChapterContent, chapters } =
+		useNovelStore();
 	const chapterContent = useNovelStore(
 		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.content
 	);

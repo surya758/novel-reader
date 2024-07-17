@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Pressable } from "react-native";
+import { Image, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import React from "react";
 import { COLORS } from "@src/theme";
 import type { Novel, NovelCardType } from "@src/utils/types";
@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "@src/utils/helpers";
+import FastImage from "react-native-fast-image";
 
 type NovelCardProps = {
 	novel: Novel;
