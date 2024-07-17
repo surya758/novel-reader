@@ -9,6 +9,7 @@ import useNovelStore from "src/store";
 const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
 	const { fetchChapterContent, selectedNovelId, selectChapter } = useNovelStore();
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
+
 	const handleOnPress = () => {
 		selectChapter(chapter.id);
 		fetchChapterContent(selectedNovelId!, chapter.id);

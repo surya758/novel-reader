@@ -1,0 +1,13 @@
+{
+	"name": "server",
+	"module": "index.js",
+	"type": "module",
+	"scripts": {
+		"start": "nodemon index.ts"
+	},
+	"dependencies": {
+		"body-parser": "^1.20.2",
+		"express": "^4.19.2",
+		"nodemon": "^3.1.4"
+	}
+}
