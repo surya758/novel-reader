@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import { StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import React from "react";
 import { COLORS } from "@src/theme";
 import type { Novel, NovelCardType } from "@src/utils/types";
@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "@src/utils/helpers";
+import { Image } from "@rneui/themed";
 
 type NovelCardProps = {
 	novel: Novel;
@@ -23,7 +24,11 @@ const NovelCard = ({ novel }: NovelCardProps) => {
 
 	return (
 		<Pressable style={styles.container} onPress={handlePress}>
-			<Image source={{ uri: novel.imageUrl }} style={styles.imageStyle} />
+			<Image
+				source={{ uri: novel.imageUrl }}
+				style={styles.imageStyle}
+				PlaceholderContent={<ActivityIndicator />}
+			/>
 			<RNText style={styles.title} ellipsizeMode='tail' numberOfLines={2}>
 				{capitaliseFirstLetterOfEveryWord(novel.title)}
 			</RNText>
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
 	imageStyle: {
 		width: "100%",
 		height: 175,
+		aspectRatio: 2 / 3,
 		objectFit: "cover",
 		borderRadius: 10,
 	},
