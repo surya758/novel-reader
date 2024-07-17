@@ -49,7 +49,7 @@ const ChapterScreen = () => {
 	const ChapterAction = () => {
 		return (
 			<View style={styles.chapterAction}>
-				<ChapterMovement icon='caret-back-sharp' onPress={() => navigateChapter("previous")} />
+				<ChapterMovement icon='caret-back-outline' onPress={() => navigateChapter("previous")} />
 				<Pressable onPress={() => navigation.goBack()}>
 					<RNText style={styles.chaptersText}>Chapters</RNText>
 				</Pressable>
