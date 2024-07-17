@@ -7,19 +7,19 @@ import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 
 const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
-	const { fetchChapterContent, selectedNovelId, selectChapter } = useNovelStore();
+	const { fetchChapterContent, selectChapter } = useNovelStore();
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
 
 	const handleOnPress = () => {
-		selectChapter(chapter.id);
-		fetchChapterContent(selectedNovelId!, chapter.id);
+		selectChapter(chapter._id);
+		fetchChapterContent(chapter._id);
 		navigation.navigate("Chapter", { title: chapter.title });
 	};
 
 	return (
 		<Pressable style={styles.chapterCardContainer} onPress={handleOnPress}>
 			<RNText style={styles.chapterCardText} numberOfLines={2} ellipsizeMode='tail'>
-				Chapter {chapter.id}: {chapter.title}
+				Chapter {chapter.chapterNumber}: {chapter.title}
 			</RNText>
 		</Pressable>
 	);

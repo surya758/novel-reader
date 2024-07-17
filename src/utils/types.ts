@@ -4,21 +4,25 @@ type NovelCardType = {
 };
 
 interface Novel {
-	id: number;
+	_id: string;
 	title: string;
 	imageUrl: string;
 	chaptersCount: number;
 }
 
-interface Chapter {
+interface Content {
 	id: number;
-	title: string;
-	content?: string;
+	content: string;
+	wordCount: number;
 }
 
-// type Chapter = {
-// 	title: string;
-// };
+interface Chapter {
+	_id: string;
+	novelId: string;
+	chapterNumber: number;
+	title: string;
+	content?: Content[];
+}
 
 type HomeStackParamList = {
 	Home: undefined;
@@ -26,4 +30,4 @@ type HomeStackParamList = {
 	Detail: { title: string };
 };
 
-export { NovelCardType, HomeStackParamList, Chapter, Novel };
+export { NovelCardType, HomeStackParamList, Chapter, Novel, Content };

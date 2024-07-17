@@ -6,6 +6,7 @@ import { HomeStackRouteProp, HomeStackNavigationProp } from "@src/navigation/Roo
 import { COLORS } from "src/theme";
 import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "src/store";
+import { FlashList } from "@shopify/flash-list";
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
@@ -19,19 +20,33 @@ const ChapterScreen = () => {
 		chapters,
 	} = useNovelStore();
 	const chapterContent = useNovelStore(
-		(state) => state.chapters.find((chapter) => chapter.id === currentChapterId)!.content
+		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.content
+	);
+	const chapterNumber = useNovelStore(
+		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.chapterNumber
 	);
 
-	const navigateChapter = (direction: string, chapterId: number | null = currentChapterId) => {
+	const navigateChapter = (direction: string, chapterId: string | null = currentChapterId) => {
 		if (!chapterId) return;
-		const newChapterId = direction === "next" ? chapterId + 1 : chapterId - 1;
-		if (newChapterId > 0 && newChapterId < chapters.length) {
+
+		const currentChapterIndex = chapters.findIndex((chapter) => chapter._id === chapterId);
+
+		const newChapterId =
+			direction === "next"
+				? chapters[currentChapterIndex + 1]?._id
+				: chapters[currentChapterIndex - 1]?._id;
+
+		if (newChapterId) {
 			selectChapter(newChapterId);
-			fetchChapterContent(selectedNovelId!, newChapterId);
+			fetchChapterContent(newChapterId);
 			navigation.replace("Chapter", {
-				title: `Chapter ${newChapterId}`,
+				title: chapters.find((chapter) => chapter._id === newChapterId)!.title,
 			});
 		}
+	};
+
+	const getWordCount = () => {
+		return chapterContent?.reduce((acc, item) => acc + item.wordCount, 0);
 	};
 
 	const ChapterAction = () => {
@@ -57,11 +72,19 @@ const ChapterScreen = () => {
 	return (
 		<Layout style={styles.layout} type='scroll'>
 			<RNText style={styles.titleText}>
-				Chapter {currentChapterId}: {title}
+				Chapter {chapterNumber}: {title}
 			</RNText>
 			<View style={styles.contentContainer}>
 				<If condition={!isLoading} otherwise={<ChapterLoading />}>
-					<RNText style={styles.contentText}>{chapterContent}</RNText>
+					<FlashList
+						data={chapterContent}
+						ListHeaderComponent={() => (
+							<RNText style={styles.wordCountText}>Word Count: {getWordCount()}</RNText>
+						)}
+						renderItem={({ item }) => <RNText style={styles.contentText}>{item.content}</RNText>}
+						keyExtractor={(item) => item.id.toString()}
+						estimatedItemSize={100}
+					/>
 				</If>
 			</View>
 
@@ -82,6 +105,12 @@ const styles = StyleSheet.create({
 	titleText: {
 		fontSize: 24,
 		color: COLORS.white,
+		fontWeight: "bold",
+	},
+	wordCountText: {
+		marginTop: 10,
+		fontSize: 16,
+		color: COLORS.lightGrey,
 		fontWeight: "bold",
 	},
 	contentText: {

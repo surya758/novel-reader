@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import openpyxl
 import time
 import re
+import sys
 
 
 def extract_chapter_number(title):
@@ -75,6 +76,6 @@ if __name__ == "__main__":
     novel_id = "6697517a8beba347c4942b02"
     for chapter in chapter_data:
         h4_content, p_content = scrape_website(chapter["url"])
-        send_to_api(novel_id, h4_content, p_content)
+        send_to_api(sys.argv[1], h4_content, p_content)
         # time.sleep(1)
     print("Scraping completed and data sent to API.")

@@ -1,0 +1,11 @@
+runtime: nodejs14
+
+env_variables:
+  NODE_ENV: "production"
+  PORT: "3000"
+  MONGODB_URL: "mongodb+srv://skant758:ER7cRTjS61fT1SkB@cluster0.ij7tgby.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+
+handlers:
+  - url: /.*
+    secure: always
+    script: auto

@@ -4,7 +4,7 @@ const novelSchema = new mongoose.Schema(
 	{
 		title: { type: String, required: true },
 		author: { type: String, required: true },
-		image: { type: String },
+		imageUrl: { type: String },
 		description: { type: String },
 		chapters: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chapter" }],
 	},

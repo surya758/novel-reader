@@ -4,7 +4,6 @@ import Novel from "../models/novel.js";
 const router = express.Router();
 // Create a new novel
 router.post("/", async (req, res) => {
-	console.log(req.body);
 	try {
 		const novel = new Novel(req.body);
 		await novel.save();

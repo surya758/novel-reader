@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
 import { COLORS } from "@src/theme";
@@ -9,8 +9,13 @@ import { HomeStackRouteProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
 
 const NovelDetailScreen = () => {
-	const { chapters } = useNovelStore();
+	const { chapters, selectedNovelId, fetchAllChaptersTitles } = useNovelStore();
 	const params = useRoute<HomeStackRouteProp<"Detail">>().params!;
+
+	useEffect(() => {
+		fetchAllChaptersTitles(selectedNovelId!);
+	}, []);
+
 	const headerComponent = () => {
 		return (
 			<View style={styles.headerContainer}>
@@ -25,7 +30,7 @@ const NovelDetailScreen = () => {
 				data={chapters}
 				ListHeaderComponent={headerComponent}
 				renderItem={({ item }) => <ChapterCard chapter={item} />}
-				keyExtractor={(item) => String(item.id)}
+				keyExtractor={(item) => item._id}
 				estimatedItemSize={30}
 			/>
 		</Layout>

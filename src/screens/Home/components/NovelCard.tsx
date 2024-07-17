@@ -6,6 +6,7 @@ import RNText from "@src/components/RNText";
 import { useNavigation } from "@react-navigation/native";
 import { HomeStackNavigationProp } from "@src/navigation/RootNav";
 import useNovelStore from "src/store";
+import { capitaliseFirstLetterOfEveryWord } from "@src/utils/helpers";
 
 type NovelCardProps = {
 	novel: Novel;
@@ -16,7 +17,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
 	const { selectNovel } = useNovelStore();
 
 	const handlePress = () => {
-		selectNovel(novel.id);
+		selectNovel(novel._id);
 		navigation.navigate("Detail", { title: novel.title });
 	};
 
@@ -24,7 +25,7 @@ const NovelCard = ({ novel }: NovelCardProps) => {
 		<Pressable style={styles.container} onPress={handlePress}>
 			<Image source={{ uri: novel.imageUrl }} style={styles.imageStyle} />
 			<RNText style={styles.title} ellipsizeMode='tail' numberOfLines={2}>
-				{novel.title}
+				{capitaliseFirstLetterOfEveryWord(novel.title)}
 			</RNText>
 		</Pressable>
 	);
