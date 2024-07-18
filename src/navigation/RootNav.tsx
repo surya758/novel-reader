@@ -6,7 +6,8 @@ import NovelDetailScreen from "src/screens/Details";
 import { HomeStackParamList } from "@src/utils/types";
 import { COLORS } from "src/theme";
 import { TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 
@@ -26,20 +27,27 @@ const WINDOW_WIDTH = Dimensions.get("window").width;
 const RootNav = () => {
 	function CustomHeader({ title }: { title: string }) {
 		const navigation = useNavigation();
-		const { currentChapterId } = useNovelStore();
+		const { currentChapterId, selectedNovelId, novels } = useNovelStore();
 		const chapterNumber = useNovelStore(
 			(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.chapterNumber
 		);
+		const novelTitle = novels.find((novel) => novel._id === selectedNovelId)!.title;
 
 		return (
 			<View style={styles.header}>
-				<View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-					<TouchableOpacity onPress={() => navigation.goBack()}>
-						<Icon name='caret-back-circle' size={24} color={COLORS.lightGrey} />
+				<View style={styles.lowerContainer}>
+					<TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+						<Ionicons name='caret-back-circle' size={24} color={COLORS.lightGrey} />
 					</TouchableOpacity>
-					<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
-						Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
-					</Text>
+					<View style={styles.titleBox}>
+						<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
+							{capitaliseFirstLetterOfEveryWord(novelTitle)}
+						</Text>
+						<FontAwesome name='angle-double-right' size={12} color={COLORS.lightGrey} />
+						<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
+							Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
+						</Text>
+					</View>
 				</View>
 				<View />
 			</View>
@@ -80,6 +88,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 	},
+	lowerContainer: { flexDirection: "row", alignItems: "center", justifyContent: "center" },
 	header: {
 		flexDirection: "row",
 		justifyContent: "flex-start",
@@ -88,9 +97,20 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.darkGrey,
 		height: 90,
 	},
+	titleBox: {
+		maxWidth: WINDOW_WIDTH * 0.9,
+		flexDirection: "row",
+		gap: 5,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	backButton: {
+		marginRight: 10,
+	},
 	headerTitle: {
 		fontSize: 13,
 		color: COLORS.grey,
-		maxWidth: WINDOW_WIDTH * 0.8,
+		maxWidth: WINDOW_WIDTH * 0.4,
+		fontFamily: "Lora-MediumItalic",
 	},
 });

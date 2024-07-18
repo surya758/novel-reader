@@ -42,5 +42,6 @@ const styles = StyleSheet.create({
 	chapterCardText: {
 		fontSize: 16,
 		color: COLORS.lightGrey,
+		fontFamily: "Lora-Regular",
 	},
 });

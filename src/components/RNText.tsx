@@ -3,9 +3,9 @@ import React, { PropsWithChildren } from "react";
 
 type RNTextProps = PropsWithChildren<TextProps>;
 
-const RNText = ({ children, ...rest }: RNTextProps) => {
+const RNText = ({ children, style, ...rest }: RNTextProps) => {
 	return (
-		<Text style={styles.text} {...rest}>
+		<Text style={[styles.text, style]} {...rest}>
 			{children}
 		</Text>
 	);
@@ -15,6 +15,6 @@ export default RNText;
 
 const styles = StyleSheet.create({
 	text: {
-		fontFamily: "Segoe-UI",
+		fontFamily: "Lora-Regular",
 	},
 });

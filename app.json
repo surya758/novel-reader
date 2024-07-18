@@ -28,7 +28,11 @@
 			[
 				"expo-font",
 				{
-					"fonts": ["./assets/fonts/Segoe-UI-Bold.ttf", "./assets/fonts/Segoe-UI.ttf"]
+					"fonts": [
+						"./assets/fonts/Segoe-UI-Bold.ttf",
+						"./assets/fonts/Segoe-UI.ttf",
+						"./assets/fonts/Lora-Regular.ttf"
+					]
 				}
 			]
 		],

@@ -66,9 +66,11 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: COLORS.white,
 		fontWeight: "bold",
+		fontFamily: "Lora-Regular",
 	},
 	length: {
 		color: COLORS.lightGrey,
 		fontSize: 16,
+		fontFamily: "Lora-Regular",
 	},
 });

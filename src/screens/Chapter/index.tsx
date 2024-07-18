@@ -8,6 +8,7 @@ import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
+import { FlatList } from "react-native-gesture-handler";
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
@@ -99,7 +100,7 @@ const ChapterScreen = () => {
 						)}
 						renderItem={({ item }) => <RNText style={styles.contentText}>{item.content}</RNText>}
 						keyExtractor={(item) => item.id.toString()}
-						estimatedItemSize={100}
+						estimatedItemSize={200}
 					/>
 				</If>
 			</View>
@@ -122,18 +123,19 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		fontSize: 24,
 		color: COLORS.white,
-		fontWeight: "bold",
+		fontFamily: "Lora-MediumItalic",
 	},
 	wordCountText: {
 		marginTop: 10,
 		fontSize: 16,
 		color: COLORS.lightGrey,
-		fontWeight: "bold",
+		fontFamily: "Lora-Bold",
 	},
 	contentText: {
 		marginTop: 10,
 		fontSize: 16,
 		color: COLORS.lightGrey,
+		fontFamily: "Lora-Regular",
 	},
 	chapterAction: {
 		flexDirection: "row",
@@ -144,6 +146,6 @@ const styles = StyleSheet.create({
 	chaptersText: {
 		fontSize: 20,
 		color: COLORS.lightGrey,
-		fontWeight: "bold",
+		fontFamily: "Lora-Regular",
 	},
 });
