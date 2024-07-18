@@ -5,7 +5,7 @@ import ChapterScreen from "src/screens/Chapter";
 import NovelDetailScreen from "src/screens/Details";
 import { HomeStackParamList } from "@src/utils/types";
 import { COLORS } from "src/theme";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
@@ -21,6 +21,8 @@ export type HomeStackRouteProp<T extends keyof HomeStackParamList> = RouteProp<
 	T
 >;
 
+const WINDOW_WIDTH = Dimensions.get("window").width;
+
 const RootNav = () => {
 	function CustomHeader({ title }: { title: string }) {
 		const navigation = useNavigation();
@@ -35,7 +37,7 @@ const RootNav = () => {
 					<TouchableOpacity onPress={() => navigation.goBack()}>
 						<Icon name='caret-back-circle' size={24} color={COLORS.lightGrey} />
 					</TouchableOpacity>
-					<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='middle'>
+					<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
 						Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
 					</Text>
 				</View>
@@ -89,6 +91,6 @@ const styles = StyleSheet.create({
 	headerTitle: {
 		fontSize: 13,
 		color: COLORS.grey,
-		maxWidth: "85%",
+		maxWidth: WINDOW_WIDTH * 0.8,
 	},
 });
