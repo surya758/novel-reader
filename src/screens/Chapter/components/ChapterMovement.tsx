@@ -20,7 +20,7 @@ const ChapterMovement = ({ icon, onPress }: ChapterMovementProps) => {
 				right: 10,
 			}}
 		>
-			<Icon name={icon} size={50} color={COLORS.primary} />
+			<Icon name={icon} size={50} color={COLORS.grey} />
 		</Pressable>
 	);
 };

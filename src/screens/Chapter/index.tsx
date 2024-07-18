@@ -14,8 +14,15 @@ const ChapterScreen = () => {
 	const { title } = useRoute<HomeStackRouteProp<"Chapter">>().params;
 	const [refreshing, setRefreshing] = useState(false);
 
-	const { currentChapterId, isLoading, selectChapter, fetchChapterContent, chapters } =
-		useNovelStore();
+	const {
+		currentChapterId,
+		isLoading,
+		selectChapter,
+		fetchChapterContent,
+		chapters,
+		setNovelReadingProgress,
+		selectedNovelId,
+	} = useNovelStore();
 	const chapterContent = useNovelStore(
 		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.content
 	);
@@ -32,6 +39,8 @@ const ChapterScreen = () => {
 			direction === "next"
 				? chapters[currentChapterIndex + 1]?._id
 				: chapters[currentChapterIndex - 1]?._id;
+
+		setNovelReadingProgress(selectedNovelId!, newChapterId);
 
 		if (newChapterId) {
 			selectChapter(newChapterId);
@@ -110,6 +119,7 @@ const styles = StyleSheet.create({
 	chapterLoadingContainer: { marginTop: 20 },
 	contentContainer: { minHeight: 40 },
 	titleText: {
+		marginTop: 10,
 		fontSize: 24,
 		color: COLORS.white,
 		fontWeight: "bold",
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
 	},
 	chaptersText: {
 		fontSize: 20,
-		color: COLORS.white,
+		color: COLORS.lightGrey,
 		fontWeight: "bold",
 	},
 });
