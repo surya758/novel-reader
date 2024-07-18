@@ -35,7 +35,7 @@ const RootNav = () => {
 					<TouchableOpacity onPress={() => navigation.goBack()}>
 						<Icon name='caret-back-circle' size={24} color={COLORS.lightGrey} />
 					</TouchableOpacity>
-					<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
+					<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='middle'>
 						Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
 					</Text>
 				</View>
@@ -89,5 +89,6 @@ const styles = StyleSheet.create({
 	headerTitle: {
 		fontSize: 13,
 		color: COLORS.grey,
+		maxWidth: "85%",
 	},
 });
