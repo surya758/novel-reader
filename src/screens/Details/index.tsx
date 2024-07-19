@@ -27,12 +27,14 @@ const NovelDetailScreen = () => {
 				);
 				console.log("index", indexOfReadingChapter);
 
+				if (indexOfReadingChapter === 0) return;
+
 				if (indexOfReadingChapter !== -1 && flashListRef.current) {
 					// Use setTimeout to ensure this runs after the current render cycle
 					setTimeout(() => {
 						flashListRef.current?.scrollToIndex({
 							index: indexOfReadingChapter,
-							animated: false,
+							animated: indexOfReadingChapter > 100 ? false : true,
 							viewPosition: 0.2,
 						});
 					}, 300);
