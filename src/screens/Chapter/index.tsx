@@ -8,7 +8,6 @@ import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
-import { FlatList } from "react-native-gesture-handler";
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();

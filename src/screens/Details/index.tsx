@@ -1,17 +1,45 @@
 import { StyleSheet, View } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
 import { COLORS } from "@src/theme";
 import ChapterCard from "./components/ChapterCard";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { HomeStackRouteProp } from "@src/navigation/RootNav";
 import useNovelStore from "@src/store";
+import { Chapter } from "src/utils/types";
 
 const NovelDetailScreen = () => {
-	const { chapters, selectedNovelId, fetchAllChaptersTitles, isLoading } = useNovelStore();
+	const { chapters, selectedNovelId, fetchAllChaptersTitles, isLoading, novelReadingProgress } =
+		useNovelStore();
 	const params = useRoute<HomeStackRouteProp<"Detail">>().params!;
 	const [refreshing, setRefreshing] = useState(false);
+	const flashListRef = useRef<FlashList<Chapter>>(null);
+
+	useFocusEffect(
+		useCallback(() => {
+			if (chapters.length > 0 && novelReadingProgress.length > 0) {
+				const currentNovel = novelReadingProgress.find(
+					(novel) => novel.novelId === selectedNovelId
+				);
+				const indexOfReadingChapter = chapters.findIndex(
+					(chapter) => chapter._id === currentNovel?.chapterId
+				);
+				console.log("index", indexOfReadingChapter);
+
+				if (indexOfReadingChapter !== -1 && flashListRef.current) {
+					// Use setTimeout to ensure this runs after the current render cycle
+					setTimeout(() => {
+						flashListRef.current?.scrollToIndex({
+							index: indexOfReadingChapter,
+							animated: false,
+							viewPosition: 0.2,
+						});
+					}, 300);
+				}
+			}
+		}, [chapters, novelReadingProgress, selectedNovelId])
+	);
 
 	useEffect(() => {
 		fetchAllChaptersTitles(selectedNovelId!);
@@ -43,6 +71,7 @@ const NovelDetailScreen = () => {
 			<FlashList
 				onRefresh={handleRefresh}
 				refreshing={refreshing}
+				ref={flashListRef}
 				data={!isLoading ? sortedChapters : []}
 				ListHeaderComponent={headerComponent}
 				renderItem={({ item }) => <ChapterCard chapter={item} />}
