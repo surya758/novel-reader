@@ -10,6 +10,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
+import { RNText } from "src/components";
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
@@ -25,7 +26,7 @@ export type HomeStackRouteProp<T extends keyof HomeStackParamList> = RouteProp<
 const WINDOW_WIDTH = Dimensions.get("window").width;
 
 const RootNav = () => {
-	function CustomHeader({ title }: { title: string }) {
+	function ChapterCustomHeader({ title }: { title: string }) {
 		const navigation = useNavigation();
 		const { currentChapterId, selectedNovelId, novels } = useNovelStore();
 		const chapterNumber = useNovelStore(
@@ -54,6 +55,23 @@ const RootNav = () => {
 		);
 	}
 
+	function DetailsCustomHeader({ title }: { title: string }) {
+		const navigation = useNavigation();
+		return (
+			<View style={styles.header}>
+				<View style={styles.lowerContainer}>
+					<TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+						<Ionicons name='caret-back-circle' size={24} color={COLORS.lightGrey} />
+					</TouchableOpacity>
+					<RNText style={styles.headerTextTitle} numberOfLines={1} ellipsizeMode='tail'>
+						{title}
+					</RNText>
+				</View>
+				<View />
+			</View>
+		);
+	}
+
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
@@ -70,11 +88,21 @@ const RootNav = () => {
 						headerShown: true,
 						gestureEnabled: false,
 						header({ route }) {
-							return <CustomHeader title={(route.params as { title: string }).title} />;
+							return <ChapterCustomHeader title={(route.params as { title: string }).title} />;
 						},
 					}}
 				/>
-				<Stack.Screen name='Detail' component={NovelDetailScreen} />
+				<Stack.Screen
+					name='Detail'
+					component={NovelDetailScreen}
+					options={{
+						headerShown: true,
+						gestureEnabled: false,
+						header({ route }) {
+							return <DetailsCustomHeader title={(route.params as { title: string }).title} />;
+						},
+					}}
+				/>
 			</Stack.Navigator>
 		</NavigationContainer>
 	);
@@ -112,5 +140,11 @@ const styles = StyleSheet.create({
 		color: COLORS.grey,
 		maxWidth: WINDOW_WIDTH * 0.4,
 		fontFamily: "Lora-MediumItalic",
+	},
+	headerTextTitle: {
+		fontSize: 14,
+		color: COLORS.grey,
+		fontFamily: "Lora-SemiBoldItalic",
+		maxWidth: WINDOW_WIDTH * 0.8,
 	},
 });
