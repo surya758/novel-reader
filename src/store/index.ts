@@ -144,4 +144,6 @@ async function updateNovel(novelId: string, novel: Novel): Promise<void> {
 	await axios.put(`${BACKEND_URL}/novels/${novelId}`, novel);
 }
 
+
+
 export default useNovelStore;

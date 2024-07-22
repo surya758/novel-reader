@@ -3,6 +3,11 @@ type NovelCardType = {
 	image: string;
 };
 
+interface Character {
+	_id: string;
+	name: string;
+	imageUrl: string;
+}
 interface Novel {
 	_id: string;
 	title: string;
@@ -11,6 +16,7 @@ interface Novel {
 	imageUrl: string;
 	chaptersCount: number;
 	isArchieved: boolean;
+	characters: Character[];
 }
 
 interface Content {

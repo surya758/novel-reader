@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Dimensions, Text, ActivityIndicator } from "react-native";
 import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
@@ -8,13 +8,23 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { HomeStackRouteProp } from "@src/navigation/RootNav";
 import useNovelStore from "@src/store";
 import { Chapter } from "src/utils/types";
+import Carousel from "react-native-reanimated-carousel";
+import { Image } from "@rneui/base";
 
 const NovelDetailScreen = () => {
-	const { chapters, selectedNovelId, fetchAllChaptersTitles, isLoading, novelReadingProgress } =
-		useNovelStore();
+	const {
+		chapters,
+		selectedNovelId,
+		fetchAllChaptersTitles,
+		isLoading,
+		novelReadingProgress,
+		novels,
+	} = useNovelStore();
 	const params = useRoute<HomeStackRouteProp<"Detail">>().params!;
 	const [refreshing, setRefreshing] = useState(false);
 	const flashListRef = useRef<FlashList<Chapter>>(null);
+	const characters = novels.find((novel) => novel._id === selectedNovelId)?.characters;
+	const width = Dimensions.get("window").width;
 
 	useFocusEffect(
 		useCallback(() => {
@@ -25,7 +35,8 @@ const NovelDetailScreen = () => {
 				const indexOfReadingChapter = chapters.findIndex(
 					(chapter) => chapter._id === currentNovel?.chapterId
 				);
-				console.log("index", indexOfReadingChapter);
+
+				if (indexOfReadingChapter < 15) return;
 
 				if (indexOfReadingChapter === 0) return;
 
@@ -53,6 +64,26 @@ const NovelDetailScreen = () => {
 				<RNText style={styles.headerTitle}>{params.title}</RNText>
 				<If condition={!isLoading} otherwise={null}>
 					<RNText style={styles.length}>Number of Chapters: {chapters.length}</RNText>
+					{!!characters!.length && (
+						<Carousel
+							mode='parallax'
+							width={width}
+							height={400}
+							style={styles.carousalContainer}
+							data={characters || []}
+							scrollAnimationDuration={1000}
+							renderItem={({ item, index }) => (
+								<View style={styles.carousalItemContainer}>
+									<Image
+										source={{ uri: item.imageUrl }}
+										style={styles.imageStyle}
+										PlaceholderContent={<ActivityIndicator />}
+									/>
+									<RNText style={styles.characterName}>{item.name}</RNText>
+								</View>
+							)}
+						/>
+					)}
 				</If>
 			</View>
 		);
@@ -91,7 +122,6 @@ const styles = StyleSheet.create({
 	headerContainer: {
 		justifyContent: "center",
 		alignItems: "center",
-		height: 50,
 	},
 	headerTitle: {
 		fontSize: 20,
@@ -103,5 +133,25 @@ const styles = StyleSheet.create({
 		color: COLORS.lightGrey,
 		fontSize: 16,
 		fontFamily: "Lora-Regular",
+	},
+	imageStyle: {
+		width: 300,
+		height: 400,
+		aspectRatio: 3 / 4,
+		resizeMode: "contain",
+		borderRadius: 30,
+	},
+	carousalContainer: {
+		marginBottom: -35,
+	},
+	carousalItemContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
+		alignItems: "center",
+	},
+	characterName: {
+		color: COLORS.white,
+		fontSize: 20,
+		fontFamily: "Lora-SemiBoldItalic",
 	},
 });
