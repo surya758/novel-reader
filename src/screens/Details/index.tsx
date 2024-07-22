@@ -1,4 +1,4 @@
-import { StyleSheet, View, Dimensions, Text, ActivityIndicator } from "react-native";
+import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
@@ -10,6 +10,7 @@ import useNovelStore from "@src/store";
 import { Chapter } from "src/utils/types";
 import Carousel from "react-native-reanimated-carousel";
 import { Image } from "@rneui/base";
+import ScrollToTop from "./components/ScrollToTop";
 
 const NovelDetailScreen = () => {
 	const {
@@ -112,6 +113,10 @@ const NovelDetailScreen = () => {
 				estimatedItemSize={500}
 				ListEmptyComponent={<Loader />}
 			/>
+			<ScrollToTop
+				onPress={() => flashListRef.current?.scrollToIndex({ index: 0 })}
+				isLoading={isLoading}
+			/>
 		</Layout>
 	);
 };
@@ -138,7 +143,8 @@ const styles = StyleSheet.create({
 		width: 300,
 		height: 400,
 		aspectRatio: 3 / 4,
-		resizeMode: "contain",
+		resizeMode: "cover",
+
 		borderRadius: 30,
 	},
 	carousalContainer: {

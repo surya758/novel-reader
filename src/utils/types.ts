@@ -35,7 +35,7 @@ interface Chapter {
 
 type HomeStackParamList = {
 	Home: undefined;
-	Chapter: { title: string };
+	ChapterDrawer: { title: string };
 	Detail: { title: string };
 };
 

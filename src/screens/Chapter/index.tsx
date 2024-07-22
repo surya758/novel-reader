@@ -2,16 +2,17 @@ import { Pressable, StyleSheet, View, RefreshControl } from "react-native";
 import React, { useState } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { HomeStackRouteProp, HomeStackNavigationProp } from "@src/navigation/RootNav";
+import { ChapterDrawerNavigationProp, ChapterDrawerRouteProp } from "@src/navigation/RootNav";
 import { COLORS } from "@src/theme";
 import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
+import { Button } from "@rneui/base";
 
 const ChapterScreen = () => {
-	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
-	const { title } = useRoute<HomeStackRouteProp<"Chapter">>().params;
+	const navigation = useNavigation<ChapterDrawerNavigationProp>();
+	const { title } = useRoute<ChapterDrawerRouteProp>().params;
 	const [refreshing, setRefreshing] = useState(false);
 
 	const {
@@ -45,7 +46,7 @@ const ChapterScreen = () => {
 		if (newChapterId) {
 			selectChapter(newChapterId);
 			fetchChapterContent(newChapterId);
-			navigation.replace("Chapter", {
+			navigation.navigate("ChapterDrawer", {
 				title: chapters.find((chapter) => chapter._id === newChapterId)!.title,
 			});
 		}

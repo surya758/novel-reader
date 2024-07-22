@@ -7,7 +7,7 @@ import useNovelStore from "@src/store";
 import { If, Loader, NoData } from "src/components";
 import { COLORS } from "src/theme";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Tab, Text, TabView } from "@rneui/themed";
+import { Tab, TabView } from "@rneui/themed";
 
 const HomeScreen = () => {
 	const { novels, fetchAllNovels, isLoading } = useNovelStore();

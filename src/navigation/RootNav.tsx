@@ -11,6 +11,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import useNovelStore from "src/store";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 import { RNText } from "src/components";
+import { createDrawerNavigator, DrawerNavigationProp } from "@react-navigation/drawer";
+import DrawerContent from "src/components/DrawerContent";
+
+const Drawer = createDrawerNavigator();
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
@@ -22,6 +26,10 @@ export type HomeStackRouteProp<T extends keyof HomeStackParamList> = RouteProp<
 	HomeStackParamList,
 	T
 >;
+
+export type ChapterDrawerNavigationProp = DrawerNavigationProp<HomeStackParamList, "ChapterDrawer">;
+
+export type ChapterDrawerRouteProp = RouteProp<HomeStackParamList, "ChapterDrawer">;
 
 const WINDOW_WIDTH = Dimensions.get("window").width;
 
@@ -72,21 +80,43 @@ const RootNav = () => {
 		);
 	}
 
+	const ChapterDrawer = ({ route }: { route: any }) => {
+		return (
+			<Drawer.Navigator
+				initialRouteName='Chapter'
+				screenOptions={{
+					overlayColor: "transparent",
+					// swipeEnabled: false,
+				}}
+				drawerContent={({ navigation }) => <DrawerContent navigation={navigation} />}
+			>
+				<Drawer.Screen
+					name='Chapter'
+					component={ChapterScreen}
+					options={{
+						headerShown: false,
+					}}
+					initialParams={{ title: (route.params as { title: string }).title }}
+				/>
+			</Drawer.Navigator>
+		);
+	};
+
 	return (
 		<NavigationContainer>
 			<Stack.Navigator
 				initialRouteName='Home'
 				screenOptions={{
+					gestureEnabled: false,
 					headerShown: false,
 				}}
 			>
 				<Stack.Screen name='Home' component={HomeScreen} />
 				<Stack.Screen
-					name='Chapter'
-					component={ChapterScreen}
+					name='ChapterDrawer'
+					component={ChapterDrawer}
 					options={{
 						headerShown: true,
-						gestureEnabled: false,
 						header({ route }) {
 							return <ChapterCustomHeader title={(route.params as { title: string }).title} />;
 						},
@@ -97,7 +127,6 @@ const RootNav = () => {
 					component={NovelDetailScreen}
 					options={{
 						headerShown: true,
-						gestureEnabled: false,
 						header({ route }) {
 							return <DetailsCustomHeader title={(route.params as { title: string }).title} />;
 						},

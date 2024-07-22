@@ -10,13 +10,13 @@ import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 const ChapterCard = ({ chapter }: { chapter: Chapter }) => {
 	const { fetchChapterContent, selectChapter, setNovelReadingProgress, selectedNovelId } =
 		useNovelStore();
-	const navigation = useNavigation<HomeStackNavigationProp<"Chapter">>();
+	const navigation = useNavigation<HomeStackNavigationProp<"ChapterDrawer">>();
 
 	const handleOnPress = () => {
 		selectChapter(chapter._id);
 		fetchChapterContent(chapter._id);
 		setNovelReadingProgress(selectedNovelId!, chapter._id);
-		navigation.navigate("Chapter", { title: chapter.title });
+		navigation.navigate("ChapterDrawer", { title: chapter.title });
 	};
 
 	return (
