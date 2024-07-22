@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, ActivityIndicator } from "react-native";
+import { StyleSheet, Pressable, ActivityIndicator, Alert } from "react-native";
 import React from "react";
 import { COLORS } from "@src/theme";
 import type { Novel, NovelCardType } from "@src/utils/types";
@@ -15,15 +15,43 @@ type NovelCardProps = {
 
 const NovelCard = ({ novel }: NovelCardProps) => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Home">>();
-	const { selectNovel } = useNovelStore();
+	const { selectNovel, updateNovel, novels } = useNovelStore();
 
 	const handlePress = () => {
 		selectNovel(novel._id);
 		navigation.navigate("Detail", { title: novel.title });
 	};
 
+	const handleLongPress = () => {
+		const checkIfAlreadyAlerted = (novelId: string) => {
+			const novel = novels.find((novel) => novel._id === novelId);
+			return novel?.isArchieved;
+		};
+
+		const alert = {
+			title: checkIfAlreadyAlerted(novel._id) ? "Unarchieve" : "Archieve",
+			message: checkIfAlreadyAlerted(novel._id)
+				? "Are you sure you want to unarchieve this novel?"
+				: "Are you sure you want to archieve this novel?",
+		};
+		Alert.alert(alert.title, alert.message, [
+			{
+				text: "Cancel",
+				onPress: () => console.log("Cancel"),
+			},
+			{
+				text: "Yes",
+				onPress: () =>
+					updateNovel(novel._id, {
+						...novel,
+						isArchieved: checkIfAlreadyAlerted(novel._id) ? false : true,
+					}),
+			},
+		]);
+	};
+
 	return (
-		<Pressable style={styles.container} onPress={handlePress}>
+		<Pressable style={styles.container} onPress={handlePress} onLongPress={handleLongPress}>
 			<Image
 				source={{ uri: novel.imageUrl }}
 				style={styles.imageStyle}

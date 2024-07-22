@@ -45,7 +45,7 @@ const RootNav = () => {
 							{capitaliseFirstLetterOfEveryWord(novelTitle)}
 						</Text>
 						<FontAwesome name='angle-double-right' size={12} color={COLORS.lightGrey} />
-						<Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>
+						<Text style={styles.headerTitle2} numberOfLines={1} ellipsizeMode='tail'>
 							Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
 						</Text>
 					</View>
@@ -139,6 +139,12 @@ const styles = StyleSheet.create({
 		fontSize: 13,
 		color: COLORS.grey,
 		maxWidth: WINDOW_WIDTH * 0.4,
+		fontFamily: "Lora-MediumItalic",
+	},
+	headerTitle2: {
+		fontSize: 13,
+		color: COLORS.grey,
+		maxWidth: WINDOW_WIDTH * 0.45,
 		fontFamily: "Lora-MediumItalic",
 	},
 	headerTextTitle: {

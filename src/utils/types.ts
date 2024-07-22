@@ -10,6 +10,7 @@ interface Novel {
 	description: string;
 	imageUrl: string;
 	chaptersCount: number;
+	isArchieved: boolean;
 }
 
 interface Content {

@@ -19,85 +19,110 @@ interface NovelStore {
 	setChapters: (chapters: Chapter[]) => void;
 	selectChapter: (chapterId: string) => void;
 	fetchAllNovels: () => Promise<void>;
+	updateNovel: (novelId: string, novel: Novel) => Promise<void>;
 	fetchChapterContent: (chapterId: string) => Promise<void>;
 	fetchAllChaptersTitles: (novelId: string) => Promise<void>;
 }
 
-const useNovelStore = create<NovelStore>()((set, get) => ({
-	novels: [],
-	selectedNovelId: null,
-	chapters: [],
-	currentChapterId: null,
-	novelReadingProgress: [],
-	isLoading: false,
-	error: null,
+const useNovelStore = create<NovelStore>()(
+	persist(
+		(set, get) => ({
+			novels: [],
+			selectedNovelId: null,
+			chapters: [],
+			currentChapterId: null,
+			novelReadingProgress: [],
+			isLoading: false,
+			error: null,
 
-	setNovels: (novels) => set({ novels }),
+			setNovels: (novels) => set({ novels }),
 
-	selectNovel: (novelId: string) => set({ selectedNovelId: novelId, currentChapterId: null }),
+			selectNovel: (novelId: string) => set({ selectedNovelId: novelId, currentChapterId: null }),
 
-	setChapters: (chapters) =>
-		set(() => ({
-			chapters: chapters,
-		})),
+			setChapters: (chapters) =>
+				set(() => ({
+					chapters: chapters,
+				})),
 
-	selectChapter: (chapterId) => set({ currentChapterId: chapterId }),
+			selectChapter: (chapterId) => set({ currentChapterId: chapterId }),
 
-	setNovelReadingProgress: (novelId, chapterId) => {
-		set((state) => {
-			const existingProgressIndex = state.novelReadingProgress.findIndex(
-				(progress) => progress.novelId === novelId
-			);
+			setNovelReadingProgress: (novelId, chapterId) => {
+				set((state) => {
+					const existingProgressIndex = state.novelReadingProgress.findIndex(
+						(progress) => progress.novelId === novelId
+					);
 
-			if (existingProgressIndex !== -1) {
-				// If an entry for this novel exists, update it
-				const updatedProgress = [...state.novelReadingProgress];
-				updatedProgress[existingProgressIndex] = { novelId, chapterId };
-				return { novelReadingProgress: updatedProgress };
-			} else {
-				// If no entry exists for this novel, add a new one
+					if (existingProgressIndex !== -1) {
+						// If an entry for this novel exists, update it
+						const updatedProgress = [...state.novelReadingProgress];
+						updatedProgress[existingProgressIndex] = { novelId, chapterId };
+						return { novelReadingProgress: updatedProgress };
+					} else {
+						// If no entry exists for this novel, add a new one
+						return {
+							novelReadingProgress: [...state.novelReadingProgress, { novelId, chapterId }],
+						};
+					}
+				});
+			},
+
+			fetchAllNovels: async () => {
+				set({ isLoading: true, error: null });
+				try {
+					const novels = await fetchNovels();
+					set({ novels, isLoading: false });
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
+
+			fetchChapterContent: async (chapterId) => {
+				set({ isLoading: true, error: null });
+				try {
+					const content = await fetchChapterContent(chapterId);
+					set((state) => ({
+						chapters: state.chapters.map((chapter) => {
+							return chapter._id === chapterId ? { ...chapter, content } : chapter;
+						}),
+						isLoading: false,
+					}));
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
+
+			fetchAllChaptersTitles: async (novelId) => {
+				set({ isLoading: true, error: null });
+				try {
+					const chapters = await fetchAllChaptersTitles(novelId);
+					set({ chapters, isLoading: false });
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
+
+			updateNovel: async (novelId, novel) => {
+				try {
+					await updateNovel(novelId, novel);
+					// refresh the novels list
+					await get().fetchAllNovels();
+				} catch (error: any) {
+					set({ error: error });
+				}
+			},
+		}),
+
+		{
+			name: "novel-storage",
+			storage: createJSONStorage(() => AsyncStorage),
+			partialize(state) {
 				return {
-					novelReadingProgress: [...state.novelReadingProgress, { novelId, chapterId }],
+					novelReadingProgress: state.novelReadingProgress,
 				};
-			}
-		});
-	},
-
-	fetchAllNovels: async () => {
-		set({ isLoading: true, error: null });
-		try {
-			const novels = await fetchNovels();
-			set({ novels, isLoading: false });
-		} catch (error: any) {
-			set({ error: error, isLoading: false });
+			},
 		}
-	},
-
-	fetchChapterContent: async (chapterId) => {
-		set({ isLoading: true, error: null });
-		try {
-			const content = await fetchChapterContent(chapterId);
-			set((state) => ({
-				chapters: state.chapters.map((chapter) => {
-					return chapter._id === chapterId ? { ...chapter, content } : chapter;
-				}),
-				isLoading: false,
-			}));
-		} catch (error: any) {
-			set({ error: error, isLoading: false });
-		}
-	},
-
-	fetchAllChaptersTitles: async (novelId) => {
-		set({ isLoading: true, error: null });
-		try {
-			const chapters = await fetchAllChaptersTitles(novelId);
-			set({ chapters, isLoading: false });
-		} catch (error: any) {
-			set({ error: error, isLoading: false });
-		}
-	},
-}));
+	)
+);
 
 async function fetchChapterContent(chapterId: string): Promise<Content[]> {
 	const response = await axios.get(`${BACKEND_URL}/chapters/${chapterId}`);
@@ -113,6 +138,10 @@ async function fetchNovels(): Promise<Novel[]> {
 async function fetchAllChaptersTitles(novelId: string): Promise<Chapter[]> {
 	const response = await axios.get(`${BACKEND_URL}/novels/${novelId}/title`);
 	return response.data;
+}
+
+async function updateNovel(novelId: string, novel: Novel): Promise<void> {
+	await axios.put(`${BACKEND_URL}/novels/${novelId}`, novel);
 }
 
 export default useNovelStore;

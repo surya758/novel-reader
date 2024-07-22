@@ -7,11 +7,13 @@ import useNovelStore from "@src/store";
 import { If, Loader, NoData } from "src/components";
 import { COLORS } from "src/theme";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Tab, Text, TabView } from "@rneui/themed";
 
 const HomeScreen = () => {
 	const { novels, fetchAllNovels, isLoading } = useNovelStore();
 	const [refreshing, setRefreshing] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
+	const [index, setIndex] = useState(0);
 
 	const filteredNovels = novels.filter((novel) =>
 		novel.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -41,15 +43,18 @@ const HomeScreen = () => {
 		);
 	};
 
-	return (
-		<Layout>
-			{searchBox()}
+	const renderFlashList = (isArchieved: boolean) => {
+		return (
 			<If condition={!isLoading} otherwise={<Loader />}>
 				<FlashList
 					onRefresh={handleRefresh}
 					refreshing={refreshing}
 					contentContainerStyle={styles.flashlistContent}
-					data={filteredNovels}
+					data={
+						isArchieved
+							? filteredNovels.filter((novel) => novel.isArchieved)
+							: filteredNovels.filter((novel) => !novel.isArchieved)
+					}
 					renderItem={({ item }) => <NovelCard novel={item} />}
 					ListEmptyComponent={<NoData />}
 					keyExtractor={(item) => item._id}
@@ -57,6 +62,41 @@ const HomeScreen = () => {
 					numColumns={3}
 				/>
 			</If>
+		);
+	};
+
+	return (
+		<Layout>
+			{searchBox()}
+			<Tab
+				value={index}
+				onChange={(e) => setIndex(e)}
+				indicatorStyle={{
+					backgroundColor: "white",
+					height: 3,
+				}}
+				variant='default'
+			>
+				<Tab.Item
+					title='Reading'
+					titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
+					icon={{ name: "book", type: "ionicon", color: index === 0 ? COLORS.white : COLORS.grey }}
+				/>
+				<Tab.Item
+					title='Archieved'
+					titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
+					icon={{
+						name: "archive",
+						type: "ionicon",
+						color: index === 1 ? COLORS.white : COLORS.grey,
+					}}
+				/>
+			</Tab>
+
+			<TabView value={index} onChange={setIndex} animationType='spring'>
+				<TabView.Item style={{ width: "100%" }}>{renderFlashList(false)}</TabView.Item>
+				<TabView.Item style={{ width: "100%" }}>{renderFlashList(true)}</TabView.Item>
+			</TabView>
 		</Layout>
 	);
 };
