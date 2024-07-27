@@ -2,10 +2,10 @@ import React, { PropsWithChildren } from "react";
 
 type IfProps = PropsWithChildren<{
 	condition: boolean;
-	otherwise: React.ReactNode;
+	otherwise?: React.ReactNode;
 }>;
 
-const If = ({ condition, otherwise, children }: IfProps) => {
+const If = ({ condition, otherwise = null, children }: IfProps) => {
 	return condition ? <>{children}</> : <>{otherwise}</>;
 };
 

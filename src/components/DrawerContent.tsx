@@ -49,7 +49,7 @@ const DrawerContent = ({ navigation }: { navigation: DrawerNavigationHelpers }) 
 				renderItem={({ item }) => {
 					return <Chapter chapter={item} navigation={navigation} />;
 				}}
-				estimatedItemSize={500}
+				estimatedItemSize={chapters.length}
 			/>
 		</View>
 	);

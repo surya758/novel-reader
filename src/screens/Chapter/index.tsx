@@ -1,18 +1,18 @@
-import { Pressable, StyleSheet, View, RefreshControl } from "react-native";
+import { Pressable, StyleSheet, View, RefreshControl, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ChapterDrawerNavigationProp, ChapterDrawerRouteProp } from "@src/navigation/RootNav";
+import { ChapterDrawerNavigationProp } from "@src/navigation/RootNav";
 import { COLORS } from "@src/theme";
 import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
-import { Button } from "@rneui/base";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { runOnJS } from "react-native-reanimated";
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<ChapterDrawerNavigationProp>();
-	const { title } = useRoute<ChapterDrawerRouteProp>().params;
 	const [refreshing, setRefreshing] = useState(false);
 
 	const {
@@ -24,12 +24,28 @@ const ChapterScreen = () => {
 		setNovelReadingProgress,
 		selectedNovelId,
 	} = useNovelStore();
+
 	const chapterContent = useNovelStore(
 		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.content
 	);
 	const chapterNumber = useNovelStore(
 		(state) => state.chapters.find((chapter) => chapter._id === currentChapterId)!.chapterNumber
 	);
+
+	const title = chapters.find((chapter) => chapter._id === currentChapterId)!.title;
+
+	const openDrawer = () => {
+		navigation.openDrawer();
+	};
+
+	const gestureHandler = Gesture.Tap()
+		.numberOfTaps(2)
+		.onEnd((_event, success) => {
+			"worklet";
+			if (success) {
+				runOnJS(openDrawer)();
+			}
+		});
 
 	const navigateChapter = (direction: string, chapterId: string | null = currentChapterId) => {
 		if (!chapterId) return;
@@ -46,9 +62,7 @@ const ChapterScreen = () => {
 		if (newChapterId) {
 			selectChapter(newChapterId);
 			fetchChapterContent(newChapterId);
-			navigation.navigate("ChapterDrawer", {
-				title: chapters.find((chapter) => chapter._id === newChapterId)!.title,
-			});
+			navigation.navigate("ChapterDrawer");
 		}
 	};
 
@@ -81,31 +95,33 @@ const ChapterScreen = () => {
 		navigateChapter("previous");
 		setRefreshing(false);
 	};
-
 	return (
 		<Layout
 			style={styles.layout}
 			type='scroll'
 			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
 		>
-			<RNText style={styles.titleText}>
-				Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
-			</RNText>
-			<View style={styles.contentContainer}>
-				<If condition={!isLoading} otherwise={<ChapterLoading />}>
-					<FlashList
-						data={chapterContent}
-						ListHeaderComponent={() => (
-							<RNText style={styles.wordCountText}>Word Count: {getWordCount()}</RNText>
-						)}
-						renderItem={({ item }) => <RNText style={styles.contentText}>{item.content}</RNText>}
-						keyExtractor={(item) => item.id.toString()}
-						estimatedItemSize={200}
-					/>
-				</If>
-			</View>
+			<If condition={!isLoading} otherwise={<ChapterLoading />}>
+				<RNText style={styles.titleText}>
+					Chapter {chapterNumber}: {capitaliseFirstLetterOfEveryWord(title)}
+				</RNText>
 
-			<ChapterAction />
+				<View style={styles.contentContainer}>
+					<GestureDetector gesture={gestureHandler}>
+						<FlashList
+							data={chapterContent}
+							ListHeaderComponent={() => (
+								<RNText style={styles.wordCountText}>Word Count: {getWordCount()}</RNText>
+							)}
+							renderItem={({ item }) => <RNText style={styles.contentText}>{item.content}</RNText>}
+							keyExtractor={(item) => item.id.toString()}
+							estimatedItemSize={200}
+						/>
+					</GestureDetector>
+				</View>
+
+				<ChapterAction />
+			</If>
 		</Layout>
 	);
 };
@@ -116,6 +132,10 @@ const styles = StyleSheet.create({
 	layout: {
 		paddingStart: 10,
 		paddingEnd: 10,
+	},
+	contentContainer2: {
+		flex: 1,
+		alignItems: "center",
 	},
 	chapterLoadingContainer: { marginTop: 20 },
 	contentContainer: { minHeight: 40 },

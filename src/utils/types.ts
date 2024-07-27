@@ -1,13 +1,22 @@
+import { z } from "zod";
+
 type NovelCardType = {
 	title: string;
 	image: string;
 };
 
 interface Character {
-	_id: string;
+	_id?: string;
 	name: string;
 	imageUrl: string;
 }
+
+type ReqNovel = {
+	title: string;
+	genre: string;
+	description?: string;
+	imageUrl: string;
+};
 interface Novel {
 	_id: string;
 	title: string;
@@ -25,8 +34,14 @@ interface Content {
 	wordCount: number;
 }
 
+type ReqChapter = {
+	novel_id: string;
+	h4_content: string[];
+	p_content: string[];
+};
+
 interface Chapter {
-	_id: string;
+	_id?: string;
 	novelId: string;
 	chapterNumber: number;
 	title: string;
@@ -35,8 +50,17 @@ interface Chapter {
 
 type HomeStackParamList = {
 	Home: undefined;
-	ChapterDrawer: { title: string };
+	ChapterDrawer: undefined;
 	Detail: { title: string };
 };
 
-export { NovelCardType, HomeStackParamList, Chapter, Novel, Content };
+export {
+	NovelCardType,
+	HomeStackParamList,
+	Chapter,
+	Novel,
+	Content,
+	Character,
+	ReqChapter,
+	ReqNovel,
+};

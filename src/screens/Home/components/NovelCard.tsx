@@ -15,11 +15,12 @@ type NovelCardProps = {
 
 const NovelCard = ({ novel }: NovelCardProps) => {
 	const navigation = useNavigation<HomeStackNavigationProp<"Home">>();
-	const { selectNovel, updateNovel, novels } = useNovelStore();
+	const { selectNovel, updateNovel, novels, setMode } = useNovelStore();
 
 	const handlePress = () => {
 		selectNovel(novel._id);
 		navigation.navigate("Detail", { title: novel.title });
+		setMode(null);
 	};
 
 	const handleLongPress = () => {

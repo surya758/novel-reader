@@ -1,16 +1,19 @@
 import { StyleSheet, View, Dimensions, ActivityIndicator } from "react-native";
 import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
-import { If, Layout, Loader, RNText } from "@src/components";
+import { If, Layout, Loader, NoData, RNText } from "@src/components";
 import { FlashList } from "@shopify/flash-list";
 import { COLORS } from "@src/theme";
 import ChapterCard from "./components/ChapterCard";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { HomeStackRouteProp } from "@src/navigation/RootNav";
-import useNovelStore from "@src/store";
+import useNovelStore, { Mode } from "@src/store";
 import { Chapter } from "src/utils/types";
 import Carousel from "react-native-reanimated-carousel";
 import { Image } from "@rneui/base";
 import ScrollToTop from "./components/ScrollToTop";
+import Delete from "./components/Delete";
+import AddCharacter from "./components/AddCharacter";
+import AddChapter from "./components/AddChapter";
 
 const NovelDetailScreen = () => {
 	const {
@@ -20,6 +23,7 @@ const NovelDetailScreen = () => {
 		isLoading,
 		novelReadingProgress,
 		novels,
+		mode,
 	} = useNovelStore();
 	const params = useRoute<HomeStackRouteProp<"Detail">>().params!;
 	const [refreshing, setRefreshing] = useState(false);
@@ -65,7 +69,7 @@ const NovelDetailScreen = () => {
 				<RNText style={styles.headerTitle}>{params.title}</RNText>
 				<If condition={!isLoading} otherwise={null}>
 					<RNText style={styles.length}>Number of Chapters: {chapters.length}</RNText>
-					{!!characters!.length && (
+					{!!characters?.length && (
 						<Carousel
 							mode='parallax'
 							width={width}
@@ -100,25 +104,42 @@ const NovelDetailScreen = () => {
 		setRefreshing(false);
 	};
 
-	return (
-		<Layout>
-			<FlashList
-				onRefresh={handleRefresh}
-				refreshing={refreshing}
-				ref={flashListRef}
-				data={!isLoading ? sortedChapters : []}
-				ListHeaderComponent={headerComponent}
-				renderItem={({ item }) => <ChapterCard chapter={item} />}
-				keyExtractor={(item) => item._id}
-				estimatedItemSize={500}
-				ListEmptyComponent={<Loader />}
-			/>
-			<ScrollToTop
-				onPress={() => flashListRef.current?.scrollToIndex({ index: 0 })}
-				isLoading={isLoading}
-			/>
-		</Layout>
-	);
+	const renderContent = useCallback(() => {
+		if (mode === Mode.ADD_CHARACTER) {
+			return <AddCharacter />;
+		}
+
+		if (mode === Mode.ADD_CHAPTER) {
+			return <AddChapter />;
+		}
+
+		if (isLoading) {
+			return <Loader />;
+		}
+
+		return (
+			<View style={styles.flashList}>
+				<FlashList
+					onRefresh={handleRefresh}
+					refreshing={refreshing}
+					ref={flashListRef}
+					data={sortedChapters}
+					ListHeaderComponent={headerComponent}
+					renderItem={({ item }) => <ChapterCard chapter={item} />}
+					keyExtractor={(item) => item._id!}
+					estimatedItemSize={sortedChapters.length || 10}
+					ListEmptyComponent={<NoData />}
+				/>
+				<ScrollToTop
+					onPress={() => flashListRef.current?.scrollToIndex({ index: 0 })}
+					isLoading={isLoading}
+				/>
+				{mode === Mode.DELETE_CHAPTER && <Delete />}
+			</View>
+		);
+	}, [mode, isLoading, sortedChapters, handleRefresh, refreshing, headerComponent]);
+
+	return <Layout>{renderContent()}</Layout>;
 };
 
 export default NovelDetailScreen;
@@ -139,12 +160,11 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		fontFamily: "Lora-Regular",
 	},
+	flashList: { flex: 1 },
 	imageStyle: {
 		width: 300,
 		height: 400,
 		aspectRatio: 3 / 4,
-		resizeMode: "cover",
-
 		borderRadius: 30,
 	},
 	carousalContainer: {

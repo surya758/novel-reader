@@ -1,10 +1,18 @@
 import { create } from "zustand";
-import { Chapter, Content, Novel } from "@src/utils/types";
+import { Chapter, Content, Novel, Character, ReqChapter, ReqNovel } from "@src/utils/types";
 import axios from "axios";
 import { persist, createJSONStorage } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const BACKEND_URL = "https://novel-app-server.vercel.app/api/v1";
+
+export enum Mode {
+	ADD_NOVEL = "ADD_NOVEL",
+	ADD_CHAPTER = "ADD_CHAPTER",
+	ADD_CHARACTER = "ADD_CHARACTER",
+	DELETE_NOVEL = "DELETE_NOVEL",
+	DELETE_CHAPTER = "DELETE_CHAPTER",
+}
 interface NovelStore {
 	novels: Novel[];
 	selectedNovelId: string | null;
@@ -12,14 +20,23 @@ interface NovelStore {
 	currentChapterId: string | null;
 	isLoading: boolean;
 	error: string | null;
+	mode?: Mode | null;
 	novelReadingProgress: { novelId: string; chapterId: string }[];
+	chaptersToDelete: string[] | null;
+	addNovel: (novel: ReqNovel) => Promise<void>;
+	addChapter: (chapter: ReqChapter) => Promise<void>;
+	addCharacter: (character: Character) => Promise<void>;
 	setNovelReadingProgress: (novelId: string, chapterId: string) => void;
 	setNovels: (novels: Novel[]) => void;
+	setMode: (mode: Mode | null) => void;
 	selectNovel: (novelId: string) => void;
 	setChapters: (chapters: Chapter[]) => void;
 	selectChapter: (chapterId: string) => void;
+	setChapterToDelete: (chapterId: string) => void;
 	fetchAllNovels: () => Promise<void>;
 	updateNovel: (novelId: string, novel: Novel) => Promise<void>;
+	deleteNovel: (novelId: string) => Promise<void>;
+	deleteChapters: (chapterIds: string[]) => Promise<void>;
 	fetchChapterContent: (chapterId: string) => Promise<void>;
 	fetchAllChaptersTitles: (novelId: string) => Promise<void>;
 }
@@ -33,9 +50,13 @@ const useNovelStore = create<NovelStore>()(
 			currentChapterId: null,
 			novelReadingProgress: [],
 			isLoading: false,
+			mode: null,
 			error: null,
+			chaptersToDelete: null,
 
 			setNovels: (novels) => set({ novels }),
+
+			setMode: (mode: Mode | null) => set({ mode }),
 
 			selectNovel: (novelId: string) => set({ selectedNovelId: novelId, currentChapterId: null }),
 
@@ -45,6 +66,18 @@ const useNovelStore = create<NovelStore>()(
 				})),
 
 			selectChapter: (chapterId) => set({ currentChapterId: chapterId }),
+
+			setChapterToDelete: (chapterId) =>
+				set((state) => {
+					if (state.chaptersToDelete?.includes(chapterId)) {
+						return {
+							...state,
+							chaptersToDelete: state.chaptersToDelete?.filter((id) => id !== chapterId),
+						};
+					} else {
+						return { ...state, chaptersToDelete: [...(state.chaptersToDelete ?? []), chapterId] };
+					}
+				}),
 
 			setNovelReadingProgress: (novelId, chapterId) => {
 				set((state) => {
@@ -110,6 +143,62 @@ const useNovelStore = create<NovelStore>()(
 					set({ error: error });
 				}
 			},
+
+			deleteNovel: async (novelId) => {
+				try {
+					await deleteNovel(novelId);
+					// refresh the novels list
+					await get().fetchAllNovels();
+				} catch (error: any) {
+					set({ error: error });
+				}
+			},
+
+			deleteChapters: async (chapterIds) => {
+				try {
+					for (const chapterId of chapterIds) {
+						await deleteChapter(chapterId);
+					}
+					// refresh the chapters list
+					await get().fetchAllChaptersTitles(get().selectedNovelId!);
+				} catch (error: any) {
+					set({ error: error });
+				}
+			},
+
+			addCharacter: async (character) => {
+				set({ isLoading: true, error: null });
+				try {
+					const novel = get().novels.find((novel) => novel._id === get().selectedNovelId);
+					if (novel) {
+						const updatedNovel = { ...novel, characters: [...novel.characters, character] };
+						await updateNovel(get().selectedNovelId!, updatedNovel);
+						await get().fetchAllNovels();
+					}
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
+
+			addChapter: async (chapter) => {
+				set({ isLoading: true, error: null });
+				try {
+					await addChapter(chapter);
+					await get().fetchAllChaptersTitles(get().selectedNovelId!);
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
+
+			addNovel: async (novel) => {
+				set({ isLoading: true, error: null });
+				try {
+					await addNovel(novel);
+					await get().fetchAllNovels();
+				} catch (error: any) {
+					set({ error: error, isLoading: false });
+				}
+			},
 		}),
 
 		{
@@ -144,6 +233,27 @@ async function updateNovel(novelId: string, novel: Novel): Promise<void> {
 	await axios.put(`${BACKEND_URL}/novels/${novelId}`, novel);
 }
 
+async function deleteNovel(novelId: string): Promise<void> {
+	await axios.delete(`${BACKEND_URL}/novels/${novelId}`);
+}
 
+async function deleteChapter(chapterId: string): Promise<void> {
+	await axios.delete(`${BACKEND_URL}/chapters/${chapterId}`);
+}
+
+async function addChapter(chapter: ReqChapter): Promise<void> {
+	try {
+		await axios.post(`${BACKEND_URL}/chapters`, chapter);
+	} catch (e) {
+		console.error(e);
+	}
+}
+async function addNovel(novel: ReqNovel): Promise<void> {
+	try {
+		await axios.post(`${BACKEND_URL}/novels`, novel);
+	} catch (e) {
+		console.error(e);
+	}
+}
 
 export default useNovelStore;

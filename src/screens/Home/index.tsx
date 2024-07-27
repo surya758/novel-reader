@@ -1,19 +1,23 @@
 import { StyleSheet, TextInput, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Layout from "@src/components/Layout";
 import NovelCard from "./components/NovelCard";
 import { FlashList } from "@shopify/flash-list";
-import useNovelStore from "@src/store";
+import useNovelStore, { Mode } from "@src/store";
 import { If, Loader, NoData } from "src/components";
 import { COLORS } from "src/theme";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Tab, TabView } from "@rneui/themed";
+import AddButton from "./components/AddButton";
+import AddNovel from "./components/AddNovel";
 
 const HomeScreen = () => {
-	const { novels, fetchAllNovels, isLoading } = useNovelStore();
+	const { novels, fetchAllNovels, isLoading, mode } = useNovelStore();
 	const [refreshing, setRefreshing] = useState(false);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [index, setIndex] = useState(0);
+
+	console.log(mode);
 
 	const filteredNovels = novels.filter((novel) =>
 		novel.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -65,38 +69,60 @@ const HomeScreen = () => {
 		);
 	};
 
+	const renderContent = useCallback(() => {
+		if (mode === Mode.ADD_NOVEL) {
+			return <AddNovel />;
+		}
+
+		if (isLoading) {
+			return <Loader />;
+		}
+
+		return (
+			<View style={styles.flashList}>
+				{searchBox()}
+
+				<Tab
+					value={index}
+					onChange={(e) => setIndex(e)}
+					indicatorStyle={{
+						backgroundColor: "white",
+						height: 3,
+					}}
+					variant='default'
+				>
+					<Tab.Item
+						title='Reading'
+						titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
+						icon={{
+							name: "book",
+							type: "ionicon",
+							color: index === 0 ? COLORS.white : COLORS.grey,
+						}}
+					/>
+					<Tab.Item
+						title='Archieved'
+						titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
+						icon={{
+							name: "archive",
+							type: "ionicon",
+							color: index === 1 ? COLORS.white : COLORS.grey,
+						}}
+					/>
+				</Tab>
+
+				<TabView value={index} onChange={setIndex} animationType='spring'>
+					<TabView.Item style={{ width: "100%" }}>{renderFlashList(false)}</TabView.Item>
+					<TabView.Item style={{ width: "100%" }}>{renderFlashList(true)}</TabView.Item>
+				</TabView>
+			</View>
+		);
+	}, [mode, isLoading, handleRefresh, refreshing, filteredNovels, index]);
+
 	return (
 		<Layout>
-			{searchBox()}
-			<Tab
-				value={index}
-				onChange={(e) => setIndex(e)}
-				indicatorStyle={{
-					backgroundColor: "white",
-					height: 3,
-				}}
-				variant='default'
-			>
-				<Tab.Item
-					title='Reading'
-					titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
-					icon={{ name: "book", type: "ionicon", color: index === 0 ? COLORS.white : COLORS.grey }}
-				/>
-				<Tab.Item
-					title='Archieved'
-					titleStyle={{ fontSize: 12, fontFamily: "Lora-Regular" }}
-					icon={{
-						name: "archive",
-						type: "ionicon",
-						color: index === 1 ? COLORS.white : COLORS.grey,
-					}}
-				/>
-			</Tab>
-
-			<TabView value={index} onChange={setIndex} animationType='spring'>
-				<TabView.Item style={{ width: "100%" }}>{renderFlashList(false)}</TabView.Item>
-				<TabView.Item style={{ width: "100%" }}>{renderFlashList(true)}</TabView.Item>
-			</TabView>
+			{mode === Mode.ADD_NOVEL || <AddButton />}
+			{renderContent()}
 		</Layout>
 	);
 };
@@ -117,6 +143,7 @@ const styles = StyleSheet.create({
 		left: 30,
 		zIndex: 1,
 	},
+	flashList: { flex: 1 },
 	searchBox: {
 		backgroundColor: COLORS.lightGrey,
 		padding: 10,

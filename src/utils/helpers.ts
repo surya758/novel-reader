@@ -1,9 +1,12 @@
 const capitaliseFirstLetterOfEveryWord = (str: string) => {
+	// Remove colon at the start if present
+	str = str.startsWith(":") ? str.slice(1).trim() : str;
+
 	// Split the string into words
 	return str
 		.toLowerCase()
 		.split(" ")
-		.map((word) => {
+		.map((word, index) => {
 			// Check if the word is an article, conjunction, or preposition
 			if (
 				[
@@ -24,7 +27,7 @@ const capitaliseFirstLetterOfEveryWord = (str: string) => {
 				].includes(word)
 			) {
 				// If it's the first word, capitalize it
-				if (str.toLowerCase().indexOf(word) === 0) {
+				if (index === 0) {
 					return word.charAt(0).toUpperCase() + word.slice(1);
 				}
 				// Otherwise, keep it lowercase
@@ -42,5 +45,4 @@ const capitaliseFirstLetterOfEveryWord = (str: string) => {
 		})
 		.join(" ");
 };
-
 export { capitaliseFirstLetterOfEveryWord };
