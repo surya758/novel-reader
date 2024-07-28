@@ -17,8 +17,6 @@ const HomeScreen = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [index, setIndex] = useState(0);
 
-	console.log(mode);
-
 	const filteredNovels = novels.filter((novel) =>
 		novel.title.toLowerCase().includes(searchQuery.toLowerCase())
 	);

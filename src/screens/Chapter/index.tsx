@@ -1,19 +1,32 @@
-import { Pressable, StyleSheet, View, RefreshControl, Dimensions } from "react-native";
-import React, { useState } from "react";
+import { Dimensions, Pressable, StyleSheet, View } from "react-native";
+import React, { useCallback } from "react";
 import { If, Layout, Loader, RNText } from "@src/components";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { ChapterDrawerNavigationProp } from "@src/navigation/RootNav";
 import { COLORS } from "@src/theme";
 import ChapterMovement from "./components/ChapterMovement";
 import useNovelStore from "@src/store";
 import { FlashList } from "@shopify/flash-list";
+import Animated, {
+	runOnJS,
+	useAnimatedRef,
+	useAnimatedScrollHandler,
+	useSharedValue,
+} from "react-native-reanimated";
 import { capitaliseFirstLetterOfEveryWord } from "src/utils/helpers";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import { runOnJS } from "react-native-reanimated";
+
+const OVERSCROLL_THRESHOLD = 200;
+const NAVIGATION_COOLDOWN = 1000;
+const height = Dimensions.get("window").height;
 
 const ChapterScreen = () => {
 	const navigation = useNavigation<ChapterDrawerNavigationProp>();
-	const [refreshing, setRefreshing] = useState(false);
+	const aref = useAnimatedRef<Animated.ScrollView>();
+	const scrollY = useSharedValue(0);
+	const contentHeight = useSharedValue(0);
+	const layoutHeight = useSharedValue(0);
+	let lastNavigationTime = 0;
 
 	const {
 		currentChapterId,
@@ -38,6 +51,37 @@ const ChapterScreen = () => {
 		navigation.openDrawer();
 	};
 
+	const navigateChapter = useCallback(
+		(direction: "next" | "previous") => {
+			const currentTime = Date.now();
+			console.log(isLoading);
+			if (currentTime - lastNavigationTime < NAVIGATION_COOLDOWN || isLoading) return;
+
+			lastNavigationTime = currentTime;
+			const currentChapterIndex = chapters.findIndex((chapter) => chapter._id === currentChapterId);
+			const newChapterId =
+				direction === "next"
+					? chapters[currentChapterIndex + 1]?._id
+					: chapters[currentChapterIndex - 1]?._id;
+
+			if (newChapterId) {
+				setNovelReadingProgress(selectedNovelId!, newChapterId);
+				selectChapter(newChapterId);
+				fetchChapterContent(newChapterId);
+				navigation.navigate("ChapterDrawer");
+			}
+		},
+		[
+			chapters,
+			currentChapterId,
+			setNovelReadingProgress,
+			selectedNovelId,
+			selectChapter,
+			fetchChapterContent,
+			isLoading,
+		]
+	);
+
 	const gestureHandler = Gesture.Tap()
 		.numberOfTaps(2)
 		.onEnd((_event, success) => {
@@ -46,25 +90,6 @@ const ChapterScreen = () => {
 				runOnJS(openDrawer)();
 			}
 		});
-
-	const navigateChapter = (direction: string, chapterId: string | null = currentChapterId) => {
-		if (!chapterId) return;
-
-		const currentChapterIndex = chapters.findIndex((chapter) => chapter._id === chapterId);
-
-		const newChapterId =
-			direction === "next"
-				? chapters[currentChapterIndex + 1]?._id
-				: chapters[currentChapterIndex - 1]?._id;
-
-		setNovelReadingProgress(selectedNovelId!, newChapterId);
-
-		if (newChapterId) {
-			selectChapter(newChapterId);
-			fetchChapterContent(newChapterId);
-			navigation.navigate("ChapterDrawer");
-		}
-	};
 
 	const getWordCount = () => {
 		return chapterContent?.reduce((acc, item) => acc + item.wordCount, 0);
@@ -90,16 +115,33 @@ const ChapterScreen = () => {
 		);
 	};
 
-	const handleRefresh = () => {
-		setRefreshing(true);
-		navigateChapter("previous");
-		setRefreshing(false);
-	};
+	const scrollHandler = useAnimatedScrollHandler({
+		onScroll: (event) => {
+			scrollY.value = event.contentOffset.y;
+			contentHeight.value = event.contentSize.height;
+			layoutHeight.value = event.layoutMeasurement.height;
+
+			const isAtEndOfContent = scrollY.value >= contentHeight.value - layoutHeight.value - 50;
+
+			if (isAtEndOfContent) {
+				const overscrollAmount = scrollY.value - (contentHeight.value - layoutHeight.value);
+				if (overscrollAmount > OVERSCROLL_THRESHOLD) {
+					runOnJS(navigateChapter)("next");
+				}
+			} else if (scrollY.value < -OVERSCROLL_THRESHOLD) {
+				runOnJS(navigateChapter)("previous");
+			}
+		},
+	});
+
 	return (
 		<Layout
 			style={styles.layout}
 			type='scroll'
-			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+			ref={aref}
+			onScroll={scrollHandler}
+			scrollEventThrottle={16}
+			bounces={true}
 		>
 			<If condition={!isLoading} otherwise={<ChapterLoading />}>
 				<RNText style={styles.titleText}>
@@ -120,7 +162,7 @@ const ChapterScreen = () => {
 					</GestureDetector>
 				</View>
 
-				<ChapterAction />
+				{/* <ChapterAction /> */}
 			</If>
 		</Layout>
 	);
@@ -134,10 +176,16 @@ const styles = StyleSheet.create({
 		paddingEnd: 10,
 	},
 	contentContainer2: {
-		flex: 1,
 		alignItems: "center",
 	},
-	chapterLoadingContainer: { marginTop: 20 },
+	chapterLoadingContainer: {
+		marginTop: 20,
+		flex: 1,
+		flexGrow: 1,
+		height: 0.8 * height,
+		justifyContent: "center",
+		alignItems: "center",
+	},
 	contentContainer: { minHeight: 40 },
 	titleText: {
 		marginTop: 10,
