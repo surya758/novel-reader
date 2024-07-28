@@ -142,6 +142,7 @@ const ChapterScreen = () => {
 			onScroll={scrollHandler}
 			scrollEventThrottle={16}
 			bounces={true}
+			scrollEnabled={!isLoading}
 		>
 			<If condition={!isLoading} otherwise={<ChapterLoading />}>
 				<RNText style={styles.titleText}>
